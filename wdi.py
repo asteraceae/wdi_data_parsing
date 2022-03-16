@@ -9,6 +9,7 @@ def depunc(sentence):
     return sentence
 #read csv into df
 df = pd.read_table("WDIData.csv", sep = ",")
+
 #read allowed attributes text file
 #each line sliced to remove \n
 with open("WorldDIDataAttributeList.txt", "r+") as f:
@@ -38,11 +39,13 @@ for index, row in df.iterrows():
     print("\r", end="")
     print (f"{row['Country Name']}, {index + 1}/{len(df.index)}                                                      ", end = "")
 
-    if row["Country Name"] not in countries:
-        countries[row["Country Name"]] = dict()
-        c = countries[row["Country Name"]]
+    cnm = depunc(row["Country Name"])
+
+    if cnm not in countries:
+        countries[cnm] = dict()
+        c = countries[cnm]
     else:
-        c = countries[row["Country Name"]]
+        c = countries[cnm]
     c[depunc(row["Indicator Name"])] = row[target]
 
 #output
